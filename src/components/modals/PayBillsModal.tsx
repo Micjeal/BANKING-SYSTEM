@@ -6,6 +6,7 @@ import {
   DollarSign,
   Check,
 } from "lucide-react";
+import { useForm, FormProvider } from "react-hook-form";
 
 import {
   Dialog,
@@ -51,6 +52,7 @@ const PayBillsModal = ({
   open = true,
   onOpenChange,
   onSuccess,
+  onClose,
 }: PayBillsModalProps) => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [selectedPayee, setSelectedPayee] = useState<string>("");
@@ -59,6 +61,8 @@ const PayBillsModal = ({
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
+
+  const formMethods = useForm();
 
   // Mock data for payees and accounts
   const savedPayees = [
@@ -351,7 +355,9 @@ const PayBillsModal = ({
             </div>
           )}
 
-          <Form>{renderStepContent()}</Form>
+          <FormProvider {...formMethods}>
+            <form>{renderStepContent()}</form>
+          </FormProvider>
         </div>
 
         <DialogFooter>
